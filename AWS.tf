@@ -14,7 +14,7 @@ resource "aws_instance" "my_Ubuntu" {
     Project = "Trial_project"
     }
     depends_on = [aws_instance.my_Jenkins]
-    key_name = "enter_here_your_key"
+    key_name = "Enter_here_your_key"
 }
 
 resource "aws_security_group" "my_WS" {
@@ -50,5 +50,5 @@ resource "aws_instance" "my_Jenkins" {
     Owner = "Maydannikov"
     Project = "Trial_project"
     }
-    key_name = "enter_here_your_key"
+    key_name = "Enter_here_your_key"
 }
