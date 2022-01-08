@@ -5,7 +5,6 @@ This solution will help developers speed up the process of creating EC2 instance
 This solution helps to simplify the process of delivering code to the user's Web server immediately after a code update (Pull) on GitHub. When using this solution, you can make 
 intermediate tests of the code for the presence of certain words or phrases, as well as check the html code for syntax errors. 
 
-
 This solution includes the use of the following tools and services: 
 
 Terraform
