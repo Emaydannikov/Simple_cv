@@ -43,10 +43,10 @@ Stage 2. Working with Terraform
 
 Stage 3. Preparing the Web server.
 
-Login with ssh to the instance named “My_Web” created on AWS using Terraform.
-Run the following command: sudo apt update && sudo apt install apache2 
-You can check the status of web server using the command: sudo systemctl status apache2
-If the service does not start automatically, you will need to start manually using the sudo systemctl start apache2 command. If you need to restart the service, use the sudo systemctl restart apache2 command 
+- Login with ssh to the instance named “My_Web” created on AWS using Terraform.
+- Run the following command: ```sudo apt update && sudo apt install apache2``` 
+- You can check the status of web server using the command: ```sudo systemctl status apache2```
+- If the service does not start automatically, you will need to start manually using the ```sudo systemctl start apache2``` command. If you need to restart the service, use the ```sudo systemctl restart apache2``` command 
 
 
 Stage 4. Preparing the Jenkins server. 
