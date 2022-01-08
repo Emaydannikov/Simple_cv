@@ -1,8 +1,9 @@
 Simple-Deploy Automation Solution to Deliver and Build Code from GitHub to Remote AWS EC2 Server.
 
-    This solution will help developers speed up the process of creating EC2 instances and security groups on the AWS platform. 
+This solution will help developers speed up the process of creating EC2 instances and security groups on the AWS platform. 
 
-This solution helps to simplify the process of delivering code to the user's Web server immediately after a code update (Pull) on GitHub. When using this solution, you can make intermediate tests of the code for the presence of certain words or phrases, as well as check the html code for syntax errors. 
+This solution helps to simplify the process of delivering code to the user's Web server immediately after a code update (Pull) on GitHub. When using this solution, you can make 
+intermediate tests of the code for the presence of certain words or phrases, as well as check the html code for syntax errors. 
 
 
 This solution includes the use of the following tools and services: 
@@ -22,13 +23,13 @@ Terraform installed on your pc
 
 Stage 1. Preparing to work with Terraform. 
 
-You will need to obtain AWS credentials. This can be done by going to the IAM section at the following link: https://console.aws.amazon.com/iamv2. Select the "Users" section and then click the "Add User".
-On the “Set user details” page, enter the username and select the “AWS credential type” option - “Access key - Programmatic access” and press the Next button. 
-Next, you need to add the user rights to work with AWS. In the menu “Set permissions” select “Attach existing policies directly” then select “Administrator Access”.  
-The next item “Add tags” is optional.
-The “Review” section will show you information about the user you are creating. Click the Create User button if all information is correct .
-Attention at this stage you have already created a user and this page contains important information. You can see the Access key ID in the open form, copy it, the Secret access key you see in the hidden form, press the show button to display it. ATTENTION Secret access key is issued only once on this page. It will not be possible to get it again for this user. Copy both keys to a safe place. 
-To provide ssh access to future servers, you need to create an ssh key. Follow this link: eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs  click the “Create key pair” button. Enter a name for your key and choose the “Private key file format” convenient for you and click “Create key pair”. Download the key to your computer. 
+- You will need to obtain AWS credentials. This can be done by going to the IAM section at the following link: https://console.aws.amazon.com/iamv2. Select the "Users" section and then click the "Add User".
+- On the “Set user details” page, enter the username and select the “AWS credential type” option - “Access key - Programmatic access” and press the Next button. 
+- Next, you need to add the user rights to work with AWS. In the menu “Set permissions” select “Attach existing policies directly” then select “Administrator Access”.  
+- The next item “Add tags” is optional.
+- The “Review” section will show you information about the user you are creating. Click the Create User button if all information is correct .
+- Attention at this stage you have already created a user and this page contains important information. You can see the Access key ID in the open form, copy it, the Secret access key you see in the hidden form, press the show button to display it. ATTENTION Secret access key is issued only once on this page. It will not be possible to get it again for this user. Copy both keys to a safe place. 
+- To provide ssh access to future servers, you need to create an ssh key. Follow this link: eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs  click the “Create key pair” button. Enter a name for your key and choose the “Private key file format” convenient for you and click “Create key pair”. Download the key to your computer. 
 
 
 Stage 2. Working with Terraform 
