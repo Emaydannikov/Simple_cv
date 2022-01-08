@@ -4,7 +4,7 @@ provider "aws" {
     region = "eu-central-1"
 }
 
-resource "aws_instance" "my_Ubuntu" {
+resource "aws_instance" "my_Web" {
     ami = "ami-0d527b8c289b4af7f"
     instance_type = "t3.micro"
     vpc_security_group_ids = [aws_security_group.my_WS.id]
