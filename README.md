@@ -7,17 +7,17 @@ intermediate tests of the code for the presence of certain words or phrases, as 
 
 This solution includes the use of the following tools and services: 
 
-Terraform
-AWS EC2, Route53
-Jenkins
-Github
+- Terraform
+- AWS EC2, Route53
+- Jenkins
+- Github
 
 
 Also, this solution requires the following elements:
 
-Registered AWS Account 
-Registered GitHubAccount 
-Terraform installed on your pc  
+- Registered AWS Account 
+- Registered GitHubAccount 
+- Terraform installed on your pc  
 
 
 Stage 1. Preparing to work with Terraform. 
@@ -33,13 +33,12 @@ Stage 1. Preparing to work with Terraform.
 
 Stage 2. Working with Terraform 
 
-Open the Terraform file located in this project for changes in a text editor convenient for you. 
-In the first block of code, you will need to enter your Access key and Secret key obtained earlier. You will also need to specify the region in which you want to create AWS instances. In our case, this is the "eu-central-1" region. 
-Next, you need to replace key_name with the ssh pair you created earlier in AWS. 
-Save the Terraform file. At the command line, enter the terraform init command, this will load the required libraries to work with AWS.
-Next, run the terraform plan command in the output, you will see what will be created in the Amazon cloud using Terraform. In our case, these are 2 EC2 instances and a Security Group for full Internet access. 
-Next, run the terraform apply command to apply and further build the infrastructure.
-Terraform will take some time to create instances. You can check their availability at the following link  https://eu-central-1.console.aws.amazon.com/ec2 .
+- Open the Terraform file located in this project for changes in a text editor convenient for you. 
+- In the first block of code, you will need to enter your Access key and Secret key obtained earlier. You will also need to specify the region in which you want to create AWS instances. In our case, this is the "eu-central-1" region. 
+- Next, you need to replace key_name with the ssh pair you created earlier in AWS. 
+- Save the Terraform file. At the command line, enter the terraform init command, this will load the required libraries to work with AWS.
+- Next, run the terraform plan command in the output, you will see what will be created in the Amazon cloud using Terraform. In our case, these are 2 EC2 instances and a Security Group for full Internet access. 
+- Next, run the terraform apply command to apply and further build the infrastructure. Terraform will take some time to create instances. You can check their availability at the following link  https://eu-central-1.console.aws.amazon.com/ec2 .
 
 
 Stage 3. Preparing the Web server.
