@@ -1,11 +1,11 @@
-Решение автоматизации “Simple-Deploy” для доставки и сборки кода с GitHub на удаленный сервер AWS EC2.
+Simple-Deploy Automation Solution to Deliver and Build Code from GitHub to Remote AWS EC2 Server.
 
-Данное решение поможет разработчику ускорить процесс создания инстансов EC2, а также групп безопасности на платформе AWS.
+    This solution will help developers speed up the process of creating EC2 instances and security groups on the AWS platform. 
 
-Данное решение помогает упростить процесс доставки кода на Web-сервер пользователя сразу после обновления (Pull) кода на GitHub. При использовании данного решения можно произвести промежуточные тесты кода на предмет наличия определенных слов или фраз, а также проверить html код на наличие ошибок в синтаксисе. 
+This solution helps to simplify the process of delivering code to the user's Web server immediately after a code update (Pull) on GitHub. When using this solution, you can make intermediate tests of the code for the presence of certain words or phrases, as well as check the html code for syntax errors. 
 
 
-Данное решение включает в себя использование следующих инструментов и сервисов: 
+This solution includes the use of the following tools and services: 
 
 Terraform
 AWS EC2, Route53
@@ -13,106 +13,112 @@ Jenkins
 Github
 
 
-Также данное решение требует наличие следующих элементов:
+Also, this solution requires the following elements:
 
-Зарегистрированный аккаунт AWS 
-Зарегистрированный аккаунт GitHub
-Установленный Terraform 
-
-
-Этап 1. Подготовка к работе с Terraform.
-
-Для того чтобы терраформ файл находящийся в репозитории данного проекта можно было использовать для создания собственных инстансов, потребуется получить учетные данные AWS. Сделать это можно перейдя в раздел IAM по следующей ссылке: https://console.aws.amazon.com/iamv2 . В данном разделе в меню слева выбрать раздел “Users” и далее нажать кнопку “Add User”.
-Далее вы увидите страницу “Set user details” где потребуется ввести имя пользователя и выбрать опцию “AWS credential type” - “Access key - Programmatic access” и нажать клавишу Next.
-На следующем этапе потребуется добавить пользователю права для работы c AWS. В меню “Set permissions” выбрать “Attach existing policies directly” в выпадающем списке выбрать “Administrator Access” и перейти далее. 
-Следующий пункт “Add tags” опционален. При желании добавьте теги для пользователя. Перейдите далее.
-Раздел “Review” покажет вам информацию о создаваемом вами пользователе. Нажмите кнопку Create User если вся информация верна.
-Внимание на данном этапе вы уже создали пользователя и на этой странице находиться важная информация. Access key ID вы видите в открытом виде, скопируйте его, Secret access key  вы видите в скрытом виде, нажмите кнопку show для отображения. ВНИМАНИЕ Secret access key  выдается только один раз на этой странице. Получить его повторно для этого пользователя не получится. Скопируйте оба ключа в надежное место.
-Для обеспечения доступа по ssh на будущие сервера требуется создать ssh ключ. Перейдите по ссылке https://eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs  и нажмите кнопку “Create key pair” . Введите имя для вашего ключа и выберите удобный для вас “Private key file format” и нажмите “Create key pair” . Выполните загрузку ключа на свой компьютер.
+Registered AWS Account 
+Registered GitHubAccount 
+Terraform installed on your pc  
 
 
-Этап 2. Работа с Terraform
+Stage 1. Preparing to work with Terraform. 
 
-Откройте Terraform файл находящийся в данном проекте для изменений в удобном для вас текстовом редакторе.
-В первом блоке кода потребуется ввести свои Access key и Secret key полученные ранее. Также потребуется указать регион в котором вы хотите создать инстансы AWS. В нашем случае это регион "eu-central-1".
-Далее в файле необходимо заменить key_name на имя ssh pair которые вы создали ранее в AWS.
-Сохраните Terraform файл и переместите с уже ранее установленным Terraform в одну директорию. В командной строке введите команду terraform init произойдет загрузка необходимых библиотек для работы с AWS.
-Далее выполните команду terraform plan  в выводе вы увидите что будет создано в облаке Amazon  с помощью Terraform. В нашем случае это 2 инстанса EC2 и Security Group для полного доступа во внешний интернет.
-Далее выполните команду terraform apply для применения и дальнейшего создания инфраструктуры. Потребуется дополнительно ввести “yes” если вы согласны на данную операцию.
-Terraform потребуется некоторое время для создания инстансов. При завершении создания инстансов вы увидите сообщение о том что инстансы успешно созданы. Проверить их наличие можно по следующей ссылке https://eu-central-1.console.aws.amazon.com/ec2 .
-
-
-Этап 3. Подготовка Веб сервера.
-
-Выполните вход по ssh на инстанс под названием “My_Web” созданный в AWS с помощью Terraform.  
-Выполните следующие команды: sudo apt update
-sudo apt install apache2
-Проверить статус работы можно с помощью команды sudo systemctl status apache2
-В случае если сервис не запустился автоматически потребуется ручной запуск с помощь команды sudo systemctl start apache2 в случае если требуется перезапуск сервиса используйте команду sudo systemctl restart apache2
+You will need to obtain AWS credentials. This can be done by going to the IAM section at the following link: https://console.aws.amazon.com/iamv2. Select the "Users" section and then click the "Add User".
+On the “Set user details” page, enter the username and select the “AWS credential type” option - “Access key - Programmatic access” and press the Next button. 
+Next, you need to add the user rights to work with AWS. In the menu “Set permissions” select “Attach existing policies directly” then select “Administrator Access”.  
+The next item “Add tags” is optional.
+The “Review” section will show you information about the user you are creating. Click the Create User button if all information is correct .
+Attention at this stage you have already created a user and this page contains important information. You can see the Access key ID in the open form, copy it, the Secret access key you see in the hidden form, press the show button to display it. ATTENTION Secret access key is issued only once on this page. It will not be possible to get it again for this user. Copy both keys to a safe place. 
+To provide ssh access to future servers, you need to create an ssh key. Follow this link: eu-central-1.console.aws.amazon.com/ec2/v2/home?region=eu-central-1#KeyPairs  click the “Create key pair” button. Enter a name for your key and choose the “Private key file format” convenient for you and click “Create key pair”. Download the key to your computer. 
 
 
-Этап 4. Подготовка сервера Jenkins.
+Stage 2. Working with Terraform 
+
+Open the Terraform file located in this project for changes in a text editor convenient for you. 
+In the first block of code, you will need to enter your Access key and Secret key obtained earlier. You will also need to specify the region in which you want to create AWS instances. In our case, this is the "eu-central-1" region. 
+Next, you need to replace key_name with the ssh pair you created earlier in AWS. 
+Save the Terraform file. At the command line, enter the terraform init command, this will load the required libraries to work with AWS.
+Next, run the terraform plan command in the output, you will see what will be created in the Amazon cloud using Terraform. In our case, these are 2 EC2 instances and a Security Group for full Internet access. 
+Next, run the terraform apply command to apply and further build the infrastructure.
+Terraform will take some time to create instances. You can check their availability at the following link  https://eu-central-1.console.aws.amazon.com/ec2 .
+
+
+Stage 3. Preparing the Web server.
+
+Login with ssh to the instance named “My_Web” created on AWS using Terraform.
+Run the following command: sudo apt update && sudo apt install apache2 
+You can check the status of web server using the command: sudo systemctl status apache2
+If the service does not start automatically, you will need to start manually using the sudo systemctl start apache2 command. If you need to restart the service, use the sudo systemctl restart apache2 command 
+
+
+Stage 4. Preparing the Jenkins server. 
     
-Выполните вход по ssh на инстанс под названием “My_Jenkins” созданный в AWS с помощью Terraform.  
-Выполните следующие команды: sudo apt update
-Требуется установка Java для работы Jenkins sudo apt install openjdk-11-jdk
-sudo wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-sudo apt update 
-sudo apt install jenkins
-Можно проверить статус Jenkins c помощью команды sudo systemctl status jenkins
-Зайдите в браузере по адресу вашего сервера на порт 8080 к примеру:  http://3.69.29.122:8080
-Выполните действия по подсказкам на странице. Выберите рекомендуемый набор плагинов, это сэкономит время в будущем.
-
-
-Этап 5. Настройка Jenkins.
-
-Переходим в настройки плагинов Jenkins http://your_jenkins_ip:8080/pluginManager/available и устанавливаем плагин Publish Over SSH  с его помощью можно зайти на наш веб сервер и разместить там новую версию сайта.
-Переходим в настройки Jenkins http://your_jenkins_ip:8080/configure находим там пунткт Publish over SSH  и вносим туда свой ключ полученный ранее на AWS.
-Добавляем данные сервера на котором у нас будет сайт, Name - произвольное имя, hostname - ip адрес ранее созданного инстанса “My_Web”, Username - ubuntu,  Remote Directory -  /var/www/html . Обязательно нажмите Применить и Сохранить по окончанию настройки.
-Создаем новый Job http://your_jenkins_ip:8080/view/all/newJob Выбираем “Создать задачу со свободной конфигурацией”. 
-В пункте “Общие” Выбрать “GitHub project” и указываем ssh ссылку на Ваш репозиторий. К примеру: git@github.com:Your_username/Your_project_name.git/ 
-В пункте “Управление исходным кодом” выбираем GIT и так же указываем ssh ссылку на Ваш репозиторий
-Далее необходимо дать возможность Jenkins использовать Ваш репозиторий, для этого нужно сделать новые ssh ключи. Используйте команду ssh-keygen
-Нажмите кнопку “Add” и выберите “Jenkins”.
-“Kind”  выбрать “SSH Username with private key”
-Назначьте произвольные “ID” и “Description”.
-Поле Username должно соответствовать вашему логину на GitHub.
-В “Private Key” нажмите “Enter directly” появится поле для ввода ключа. Введите содержимое файла без расширения созданного ранее при помощи ssh-keygen
-В пункте “Триггеры сборки” выбрать “GitHub hook trigger for GITScm polling”
-Добавить дополнительные тесты или операции перед доставкой кода можно с помощью кнопки “Добавить шаг сборки”
-Для доставки файлов по ssh на наш ранее созданный веб сервер “My_Web” можно по нажатию “Добавить шаг сборки” выбрав “Send files or execute commands over SSH” Выберите уже настроенный ранее сервер для отправки данных. “Remote directory”  можно указать корневой каталог, т.к. мы ранее указали /var/www/html . “Exec command” можно отправить на сервер любую команду после перемещения файлов проекта. Рекомендую перезапустить Apache во избежание проблем sudo service apache2 restart . 
+Login with ssh to an instance named “My_Jenkins” created on AWS using Terraform.   
+Run the following command: sudo apt update 
+Java installation required for Jenkins to work run the following command:
+sudo apt install openjdk-11-jdk
+Run the following command: sudo wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+Run the following command: sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+Run the following command: sudo apt update 
+Run the following command: sudo apt install jenkins
+You can check Jenkins status using the command:  sudo systemctl status jenkins
+Go in your browser to the address of your server on port 8080, for example:  http://3.69.29.122:8080
+Follow the steps on the start page. Choose the recommended set of plugins, it will save time in the future. 
 
 
 
 
-Этап 6. Настройка GitHub
+Stage 5. Jenkins configuration.
 
-Для автоматизации доставки кода сразу после Pull на GitHub нам потребуется добавить ssh ключ  https://github.com/settings/keys . Выберите “New SSH Key” далее укажите “Title” произвольное имя. Введите содержимое файла  *.Pub созданного ранее при помощи ssh-keygen
-Зайдите в настройки репозитория который необходимо будет доставить на сервер и настройте Webhook. К примеру https://github.com/Your_username/Your_project_name/settings/hooks , выберите “Add webhook”, “Payload URL”  http://your_jenkins_ip:8080/github-webhook/ , “Content type” - “application/json” .
+Go to the Jenkins plugin settings http://your_jenkins_ip:8080/pluginManager/available and install the Publish Over SSH plugin with its help you can go to our web server and place a new version of the site there. 
+Go to the Jenkins settings http://your_jenkins_ip:8080/configure find the Publish over SSH and enter your key received earlier on AWS there. 
+Add the web server data, Name is an arbitrary name, hostname is the ip address of the previously created instance “My_Web”, Username is ubuntu, Remote Directory is /var/www/html. Be sure to click Apply and Save when you're done setting up. 
+Create a new Job http://your_jenkins_ip:8080/view/all/newJob Select “Create a job with free configuration”. 
+In “General” select “GitHub project” and specify the ssh link to your repository. For example:  git@github.com:Your_username/Your_project_name.git/ 
+In "Source Code Management" select GIT and also specify the ssh link to your repository 
+Next, you need to allow Jenkins to use your repository, for this you need to create new ssh keys. Use the ssh-keygen command 
+Click the “Add” button and select “Jenkins”. 
+“Kind”  choose “SSH Username with private key”
+Set  “ID” and “Description”.
+Username must match your GitHub login. 
+In “Private Key” press “Enter directly”. Enter the contents of the file without the extension created earlier with ssh-keygen 
+"Build triggers" select "GitHub hook trigger for GITScm polling" 
+You can add additional tests or operations before delivering the code using the "Add build step" button.
+To deliver files over ssh to our previously created web server “My_Web”, you can select “Send files or execute commands over SSH” in “Add build step” Select a previously configured server to send data. “Remote directory” you can specify the root directory, because we specified /var/www/html earlier. “Exec command” can send any command to the server after moving project files. I recommend restarting Apache to avoid problems sudo service apache2 restart.  
 
 
-Этап 7. Настройка доменного имени в AWS Route 53 (Опционально)
-
-При необходимости использовать доменное имя вместо ip адреса для доступа к сайту, потребуется приобрести его в сервисе Route53 и присвоить Вашему Web-серверу.
-
-Перейдите по адресу https://console.aws.amazon.com/route53/v2 
-Выберите “Register domain” Введите желаемое имя для Вашего сайта.
-При наличии или отсутствии данного имени вы будете перенаправлены на страницу “Choose a domain name” где сможете выбрать доступное имя и домен второго уровня.
-Выберите желаемое доменное имя, добавьте в корзину и выполните оплату.
-Купленное доменное имя можно првоерить перейдя по следующей ссылке https://console.aws.amazon.com/route53/home#DomainListing:
-Далее перейдите в “Hosted Zone” и выберите свое доменное имя. https://console.aws.amazon.com/route53/v2/hostedzones
-Нажмите “Create record”. Выберите “Simple routing” и нажмите “Next”
-Нажмите “Define simple record”. “Value/Route traffic to” выберите “IP address or another value, depending on the record type” ниже введите IP адрес вашего веб-сервера. 
 
 
-Этап 8. Настройка мониторинга Zabbix (Опционально)
+Stage 6. Configuring GitHub account
 
-При необходимости получать отчеты о проблемах в работе серверов и/или их недоступности можно настроить систему мониторинга.
+To automate code delivery immediately after updating to GitHub, we need to add the ssh key https://github.com/settings/keys. Select “New SSH Key” then enter “Title”. Enter the contents of the * .Pub file created earlier with ssh-keygen 
+Go to the settings of the repository that will need to be delivered to the server and configure Webhook. For example https://github.com/Your_username/Your_project_name/settings/hooks, select “Add webhook”, “Payload URL” http: // your_jenkins_ip: 8080 / github-webhook /, “Content type” - “application / json ”. 
 
-Для настройки сервера заббикс можно в ручном режиме развернуть еще один инстанс EC2.
-Подключится к нему используя “ssh key pair” созданные ранее в Вашем аккаунте AWS.
-Выполнить настройку сервера согласно инструкции от поставщика ПО. https://www.zabbix.com/ru/download?zabbix=5.0&os_distribution=ubuntu&os_version=20.04_focal&db=postgresql&ws=nginx
-Выполнить установку zabbix-agent на сервера для мониторинга. sudo apt install zabbix-agent
-Добавить хосты для мониторинга на Zabbix сервере.
-При необходимости настроить передачу Alert-ов в мессенджер Telegram согласно следующей инструкции.  https://serveradmin.ru/nastroyka-opoveshheniy-zabbix-v-telegram/
+
+
+
+
+
+Step 7: Configuring a Domain Name on AWS Route 53 (Optional) 
+
+If you need to use a domain name instead of an ip address to access the site, you will need to purchase it from the Route53 service and assign it to your Web server. 
+
+Go to https://console.aws.amazon.com/route53/v2  
+Select “Register domain” Enter the desired name for your site. 
+You will be redirected to the “Choose a domain name” page where you can choose an available name and a second level domain.
+Select the desired domain name, add to cart and complete the payment. 
+The purchased domain name can be verified at the following link https://console.aws.amazon.com/route53/home#DomainListing: 
+Then go to “Hosted Zone” and select your domain name. https://console.aws.amazon.com/route53/v2/hostedzones   
+Click “Create record”. Select “Simple routing” 
+Click “Define simple record”. “Value / Route traffic to” select “IP address or another value, depending on the record type” below enter the IP address of your web server. 
+
+
+Stage 8. Configuring Zabbix Monitoring (Optional) 
+
+If you need to receive reports about server problems and / or their unavailability, you can configure the monitoring system. 
+
+To configure the Zabbix server, you can manually add another EC2 instance. 
+Connect using the “ssh key pair” created earlier in your AWS account. 
+Configure the server according to the instructions from the software vendor. https://www.zabbix.com/ru/download?zabbix=5.0&os_distribution=ubuntu&os_version=20.04_focal&db=postgresql&ws=nginx
+Install zabbix-agent to another monitoring server.  sudo apt install zabbix-agent
+Add hosts for monitoring on the Zabbix server. 
+You can configure the transmission of Alerts to the Telegram messenger according to the following instructions.   https://serveradmin.ru/nastroyka-opoveshheniy-zabbix-v-telegram/ 
